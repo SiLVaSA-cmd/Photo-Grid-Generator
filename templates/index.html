@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.querySelector("[data-download]");
+            const img = document.getElementById("gridImg");
+
+            button.addEventListener("click", () => {
+                const a = document.createElement("a");
+                a.href = img.src;
+                a.download = "downloaded_image.jpg";
+                a.style.display = "none";
+
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    Photo Grid Generator
+</header>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.file.label }} {{ form.file() }}
+        {{ form.size.label }} {{ form.size() }}
+        {{ form.upload_submit() }}
+    </form>
+
+    {% if file_url %}
+        <div>
+            <img src="{{ file_url }}" style="width: 400px;" alt="Uploaded Photo">
+        </div>
+    {% endif %}
+
+    {% if size_display %}
+        <div>
+            The Dimensions of your image are:
+            {{size_display}}
+        </div>
+    {% endif %}
+
+    {% if grid_url %}
+        <div>
+            <img id="gridImg" src="{{ grid_url }}" style="width: 400px;" alt="Grid Photo">
+        </div>
+    {% endif %}
+
+    <button type="button" class="button" data-download="gridImg">Download Image</button>
+</body>
+</html>
